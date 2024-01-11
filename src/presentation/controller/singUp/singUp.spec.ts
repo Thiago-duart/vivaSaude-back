@@ -1,12 +1,19 @@
+import { InvalidParamError } from "../../errors";
 import { SingUpController } from "./SingUp";
 
 describe("singUp controller", () => {
   function makeSut() {
-    const sut = new SingUpController();
-    return sut;
+    class EmailValidator implements EmailValidator {
+      isValid(email: string): boolean {
+        return true;
+      }
+    }
+    const emailValidator = new EmailValidator();
+    const sut = new SingUpController(emailValidator);
+    return { emailValidator, sut };
   }
   test("should return 400 if name is not provided", async () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
     const httpRequest = {
       body: {
         email: "valid_email",
@@ -18,7 +25,7 @@ describe("singUp controller", () => {
     expect(httpResponse.body).toEqual(new Error("Missing param: name"));
   });
   test("should return 400 if email is not provided", async () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
     const httpRequest = {
       body: {
         name: "valid_name",
@@ -30,7 +37,7 @@ describe("singUp controller", () => {
     expect(httpResponse.body).toEqual(new Error("Missing param: email"));
   });
   test("should return 400 if password is not provided", async () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
     const httpRequest = {
       body: {
         name: "valid_name",
@@ -40,5 +47,19 @@ describe("singUp controller", () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new Error("Missing param: password"));
+  });
+  test("should return 400 if email is not valid", async () => {
+    const { sut, emailValidator } = makeSut();
+    jest.spyOn(emailValidator, "isValid").mockReturnValueOnce(false);
+    const httpRequest = {
+      body: {
+        name: "valid_name",
+        email: "invalid_email",
+        password: "valid_password",
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new InvalidParamError("email"));
   });
 });
