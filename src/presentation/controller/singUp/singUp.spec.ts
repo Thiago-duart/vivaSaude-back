@@ -62,4 +62,19 @@ describe("singUp controller", () => {
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new InvalidParamError("email"));
   });
+  test("should emailValidator is called with the passed parameters", async () => {
+    const { sut, emailValidator } = makeSut();
+    const isValid = jest
+      .spyOn(emailValidator, "isValid")
+      .mockReturnValueOnce(false);
+    const httpRequest = {
+      body: {
+        name: "valid_name",
+        email: "valid_email",
+        password: "valid_password",
+      },
+    };
+    await sut.handle(httpRequest);
+    expect(isValid).toHaveBeenCalledWith("valid_email");
+  });
 });
