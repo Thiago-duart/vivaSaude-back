@@ -1,6 +1,6 @@
-import { IHttpRequest, IHttpResponse, ISingUp } from "../protocols";
+import { IHttpRequest, IHttpResponse, ISingUp } from "../../protocols";
 
-export class SingUp implements ISingUp {
+export class SingUpController implements ISingUp {
   async handle(request: IHttpRequest): Promise<IHttpResponse> {
     const data = ["email", "name", "password"];
     for (let value of data) {

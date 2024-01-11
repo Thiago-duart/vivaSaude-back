@@ -1,8 +1,8 @@
-import { SingUp } from "./SingUp";
+import { SingUpController } from "./SingUp";
 
 describe("singUp controller", () => {
   function makeSut() {
-    const sut = new SingUp();
+    const sut = new SingUpController();
     return sut;
   }
   test("should return 400 if name is not provided", async () => {
