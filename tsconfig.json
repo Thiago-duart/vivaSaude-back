@@ -13,5 +13,5 @@
     }
   },
   "include": ["src", "tests"],
-  "exclude": []
+  "exclude": ["node_modules"]
 }
