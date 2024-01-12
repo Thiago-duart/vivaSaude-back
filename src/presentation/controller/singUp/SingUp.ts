@@ -10,11 +10,14 @@ import {
   MissingParamError,
   ServerError,
 } from "../../errors";
+import { IAddAccount } from "domain";
 
 export class SingUpController implements ISingUp {
   private readonly emailValidator: IEmailValidator;
-  constructor(emailValidator: IEmailValidator) {
+  private readonly addAccount: IAddAccount;
+  constructor(emailValidator: IEmailValidator, addAccount: IAddAccount) {
     this.emailValidator = emailValidator;
+    this.addAccount = addAccount;
   }
   async handle(request: IHttpRequest): Promise<IHttpResponse> {
     try {
@@ -29,6 +32,8 @@ export class SingUpController implements ISingUp {
       if (!isValid) {
         return badRequest(new InvalidParamError("email"));
       }
+
+      const responseAddAccount = this.addAccount.add(request.body);
     } catch (error) {
       return serverError(new ServerError());
     }
