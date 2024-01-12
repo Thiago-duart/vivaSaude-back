@@ -2,16 +2,6 @@ import { InvalidParamError, ServerError } from "../../errors";
 import { SingUpController } from "./SingUp";
 
 describe("singUp controller", () => {
-  function makeSutException() {
-    class EmailValidator implements EmailValidator {
-      isValid(email: string): boolean {
-        throw new Error();
-      }
-    }
-    const emailValidator = new EmailValidator();
-    const sut = new SingUpController(emailValidator);
-    return { emailValidator, sut };
-  }
   function makeSut() {
     class EmailValidator implements EmailValidator {
       isValid(email: string): boolean {
@@ -88,7 +78,10 @@ describe("singUp controller", () => {
     expect(isValid).toHaveBeenCalledWith("valid_email");
   });
   test("should return 500 if isValid return exception", async () => {
-    const { sut } = makeSutException();
+    const { sut, emailValidator } = makeSut();
+    jest.spyOn(emailValidator, "isValid").mockImplementationOnce(() => {
+      throw new Error();
+    });
     const httpRequest = {
       body: {
         name: "valid_name",
