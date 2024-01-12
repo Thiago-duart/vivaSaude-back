@@ -1,16 +1,29 @@
+import { IEmailValidator } from "presentation/protocols";
 import { InvalidParamError, ServerError } from "../../errors";
 import { SingUpController } from "./SingUp";
+import { IAccount, IAccountModel, IAddAccount } from "domain";
 
 describe("singUp controller", () => {
   function makeSut() {
-    class EmailValidator implements EmailValidator {
+    class AddAccountStub implements IAddAccount {
+      add(data: IAccountModel): IAccount {
+        return {
+          id: "valid_id",
+          name: "valid_name",
+          email: "valid_email",
+          password: "valid_password",
+        };
+      }
+    }
+    class EmailValidatorStub implements IEmailValidator {
       isValid(email: string): boolean {
         return true;
       }
     }
-    const emailValidator = new EmailValidator();
-    const sut = new SingUpController(emailValidator);
-    return { emailValidator, sut };
+    const emailValidator = new EmailValidatorStub();
+    const addAccount = new AddAccountStub();
+    const sut = new SingUpController(emailValidator, addAccount);
+    return { emailValidator, sut, addAccount };
   }
   test("should return 400 if name is not provided", async () => {
     const { sut } = makeSut();
@@ -93,5 +106,18 @@ describe("singUp controller", () => {
 
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
+  });
+  test("should addAccount is called with the passed parameters", async () => {
+    const { sut, addAccount } = makeSut();
+    const addSpy = jest.spyOn(addAccount, "add");
+    const httpRequest = {
+      body: {
+        name: "valid_name",
+        email: "valid_email",
+        password: "valid_password",
+      },
+    };
+    await sut.handle(httpRequest);
+    expect(addSpy).toHaveBeenCalledWith(httpRequest.body);
   });
 });
