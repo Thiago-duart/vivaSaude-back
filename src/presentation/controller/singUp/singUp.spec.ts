@@ -120,4 +120,22 @@ describe("singUp controller", () => {
     await sut.handle(httpRequest);
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body);
   });
+  test("should return 500 if add return exception", async () => {
+    const { sut, addAccount } = makeSut();
+    jest
+      .spyOn(addAccount, "add")
+      .mockImplementationOnce((data: IAccountModel): IAccount => {
+        throw new Error();
+      });
+    const httpRequest = {
+      body: {
+        name: "valid_name",
+        email: "valid_email",
+        password: "valid_password",
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
+  });
 });
