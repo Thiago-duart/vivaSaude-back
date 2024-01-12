@@ -11,4 +11,15 @@ describe("EmailValidator.adapter", () => {
     const response = sut.isValid(email);
     expect(response).toBe(false);
   });
+  test("if passed valid email expect return true", () => {
+    const sut = makeSut();
+    jest
+      .spyOn(sut, "isValid")
+      .mockImplementationOnce((email: string): boolean => {
+        return true;
+      });
+    const email = "valid_email";
+    const response = sut.isValid(email);
+    expect(response).toBe(true);
+  });
 });
