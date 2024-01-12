@@ -1,4 +1,4 @@
-import { badRequest, serverError } from "../../helper";
+import { badRequest, ok, serverError } from "../../helper";
 import {
   IEmailValidator,
   IHttpRequest,
@@ -33,7 +33,9 @@ export class SingUpController implements ISingUp {
         return badRequest(new InvalidParamError("email"));
       }
 
-      const responseAddAccount = this.addAccount.add(request.body);
+      const responseAddAccount = await this.addAccount.add(request.body);
+
+      return ok(responseAddAccount);
     } catch (error) {
       return serverError(new ServerError());
     }

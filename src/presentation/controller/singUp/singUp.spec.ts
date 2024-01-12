@@ -6,13 +6,14 @@ import { IAccount, IAccountModel, IAddAccount } from "domain";
 describe("singUp controller", () => {
   function makeSut() {
     class AddAccountStub implements IAddAccount {
-      add(data: IAccountModel): IAccount {
-        return {
+      async add(data: IAccountModel): Promise<IAccount> {
+        const newAccount = {
           id: "valid_id",
           name: "valid_name",
           email: "valid_email",
           password: "valid_password",
         };
+        return newAccount;
       }
     }
     class EmailValidatorStub implements IEmailValidator {
@@ -124,9 +125,11 @@ describe("singUp controller", () => {
     const { sut, addAccount } = makeSut();
     jest
       .spyOn(addAccount, "add")
-      .mockImplementationOnce((data: IAccountModel): IAccount => {
-        throw new Error();
-      });
+      .mockImplementationOnce(
+        async (data: IAccountModel): Promise<IAccount> => {
+          throw new Error();
+        }
+      );
     const httpRequest = {
       body: {
         name: "valid_name",
@@ -137,5 +140,19 @@ describe("singUp controller", () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
+  });
+  test("should return 200 if the account is created", async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        name: "valid_name",
+        email: "valid_email",
+        password: "valid_password",
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual({ ...httpRequest.body, id: "valid_id" });
   });
 });
