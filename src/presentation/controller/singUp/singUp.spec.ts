@@ -1,7 +1,17 @@
-import { InvalidParamError } from "../../errors";
+import { InvalidParamError, ServerError } from "../../errors";
 import { SingUpController } from "./SingUp";
 
 describe("singUp controller", () => {
+  function makeSutException() {
+    class EmailValidator implements EmailValidator {
+      isValid(email: string): boolean {
+        throw new Error();
+      }
+    }
+    const emailValidator = new EmailValidator();
+    const sut = new SingUpController(emailValidator);
+    return { emailValidator, sut };
+  }
   function makeSut() {
     class EmailValidator implements EmailValidator {
       isValid(email: string): boolean {
@@ -76,5 +86,19 @@ describe("singUp controller", () => {
     };
     await sut.handle(httpRequest);
     expect(isValid).toHaveBeenCalledWith("valid_email");
+  });
+  test("should return 500 if isValid return exception", async () => {
+    const { sut } = makeSutException();
+    const httpRequest = {
+      body: {
+        name: "valid_name",
+        email: "valid_email",
+        password: "valid_password",
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
   });
 });
