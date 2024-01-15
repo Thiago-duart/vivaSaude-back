@@ -16,6 +16,6 @@ export class DbAddAccount implements IAddAccount {
     const account = await this.addAccountRepositore.add(
       Object.assign({}, data, { password: passwordHash })
     );
-    return;
+    return account;
   }
 }
