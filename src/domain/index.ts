@@ -1,2 +1,2 @@
 export { IAccount } from "./models/account";
-export * from "./useCases/addAcount";
+export * from "./usecases/addAcount";
