@@ -54,4 +54,19 @@ describe("DbAddAccount", () => {
       password: "hash_password",
     });
   });
+  test("If so, I hope to receive details of the account created.", async () => {
+    const { sut } = makeSut();
+    const data = {
+      name: "valid_name",
+      email: "valid_email",
+      password: "valid_password",
+    };
+    const response = await sut.add(data);
+    expect(response).toEqual({
+      id: "valid_id",
+      name: "valid_name",
+      email: "valid_email",
+      password: "hash_password",
+    });
+  });
 });
