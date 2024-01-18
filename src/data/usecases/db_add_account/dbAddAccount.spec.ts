@@ -1,6 +1,6 @@
 import { IAddAccountRepositore, IEncrypter } from "data/protocols";
 import { DbAddAccount } from "./DbAddAccount";
-import { IAccountModel, IAccount } from "domain";
+import { IAccountModel, IAccount } from "../../../domain";
 
 describe("DbAddAccount", () => {
   function makeSut() {

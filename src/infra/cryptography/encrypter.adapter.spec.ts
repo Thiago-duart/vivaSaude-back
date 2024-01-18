@@ -1,29 +1,28 @@
-import { Encrypter } from "./Encrypter.adapter";
+import { EncrypterAdapter } from "./Encrypter.adapter";
 import bcrypt from "bcrypt";
+
 describe("Encrypter.adapter", () => {
-  function makeSut() {
-    const sut = new Encrypter();
+  function makeSut(salt: number) {
+    const sut = new EncrypterAdapter(salt);
     return {
       sut,
     };
   }
   test("should hash is called with the passed parameters", async () => {
-    const { sut } = makeSut();
+    const { sut } = makeSut(12);
     const hashSpy = jest.spyOn(bcrypt, "hash");
-    await sut.encrypt("any_value", 10);
-    expect(hashSpy).toHaveBeenCalledWith("any_value", 10);
+    await sut.encrypt("any_value");
+    expect(hashSpy).toHaveBeenCalledWith("any_value", 12);
   });
 
   test("case returns a correct hash", async () => {
-    const { sut } = makeSut();
+    const { sut } = makeSut(12);
     jest
       .spyOn(sut, "encrypt")
-      .mockImplementationOnce(
-        async (password: string, salt: number): Promise<string> => {
-          return "any_value";
-        }
-      );
-    const hash = await sut.encrypt("any_value", 10);
+      .mockImplementationOnce(async (password: string): Promise<string> => {
+        return "any_value";
+      });
+    const hash = await sut.encrypt("any_value");
     expect(hash).toBe("any_value");
   });
 });
