@@ -1,5 +1,5 @@
 import { IAddAccountRepositore, IEncrypter } from "data/protocols";
-import { IAccount, IAccountModel, IAddAccount } from "domain";
+import { IAccount, IAccountModel, IAddAccount } from "@/domain";
 
 export class DbAddAccount implements IAddAccount {
   private readonly encrypter: IEncrypter;
