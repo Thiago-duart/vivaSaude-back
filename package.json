@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky install",
-    "test": "jest --watch --silent "
+    "test": "jest --watch --silent ",
+    "test:verbose": "jest --verbose"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "@shelf/jest-mongodb": "^4.2.0",
     "@types/bcrypt": "^5.0.2",
     "@types/jest": "^29.5.11",
+    "@types/mongodb": "^4.0.7",
     "@types/validator": "^13.11.8",
     "babel-jest": "^29.7.0",
     "husky": "^8.0.3",
@@ -28,6 +30,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "mongodb": "^6.3.0",
     "validator": "^13.11.0"
   }
 }
