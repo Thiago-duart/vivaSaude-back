@@ -14,6 +14,11 @@ describe("insert", () => {
     await mongoConnection.desconect();
   });
 
+  beforeEach(async () => {
+    const collections = mongoConnection.getCollection("accounts");
+    await collections.deleteMany({});
+  });
+
   test("should return account if successful", async () => {
     const sut = makeSut();
     const response = await sut.add({
