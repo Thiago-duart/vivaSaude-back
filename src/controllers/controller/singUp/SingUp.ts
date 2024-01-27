@@ -10,7 +10,7 @@ import {
   MissingParamError,
   ServerError,
 } from "../../errors";
-import { IAddAccount } from "domain";
+import { IAddAccount } from "@/domain";
 
 export class SingUpController implements ISingUp {
   private readonly emailValidator: IEmailValidator;

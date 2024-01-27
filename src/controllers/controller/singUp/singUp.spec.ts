@@ -1,7 +1,7 @@
-import { IEmailValidator } from "presentation/protocols";
 import { InvalidParamError, ServerError } from "../../errors";
 import { SingUpController } from "./SingUp";
 import { IAddAccount, IAccountModel, IAccount } from "../../../domain";
+import { IEmailValidator } from "@/controllers/protocols";
 
 describe("singUp controller", () => {
   function makeSut() {
