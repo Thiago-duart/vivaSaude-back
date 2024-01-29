@@ -1,5 +1,5 @@
 import { IHttpResponse } from "./http";
 
-export interface ISingUp {
+export interface IController {
   handle(IHttpRequest): Promise<IHttpResponse>;
 }

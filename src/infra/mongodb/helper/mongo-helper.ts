@@ -4,7 +4,7 @@ export const mongoConnection = {
   client: null as MongoClient,
 
   async connect(url: any) {
-    this.client = await MongoClient.connect(global.__MONGO_URI__);
+    this.client = await MongoClient.connect(url);
   },
   async desconect() {
     await this.client.close();

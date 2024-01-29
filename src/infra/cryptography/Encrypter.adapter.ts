@@ -8,6 +8,6 @@ export class EncrypterAdapter implements IEncrypter {
   }
   async encrypt(password: string): Promise<string> {
     const passwordHash = await bcrypt.hash(password, this.salt);
-    return;
+    return passwordHash;
   }
 }

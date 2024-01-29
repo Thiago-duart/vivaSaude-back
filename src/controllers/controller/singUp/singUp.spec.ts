@@ -141,7 +141,7 @@ describe("singUp controller", () => {
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   });
-  test("should return 200 if the account is created", async () => {
+  test("should return 201 if the account is created", async () => {
     const { sut } = makeSut();
     const httpRequest = {
       body: {
@@ -152,7 +152,8 @@ describe("singUp controller", () => {
     };
     const httpResponse = await sut.handle(httpRequest);
 
-    expect(httpResponse.statusCode).toBe(200);
-    expect(httpResponse.body).toEqual({ ...httpRequest.body, id: "valid_id" });
+    expect(httpResponse.statusCode).toBe(201);
+    const { name } = httpRequest.body;
+    expect(httpResponse.body).toEqual({ name, id: "valid_id" });
   });
 });

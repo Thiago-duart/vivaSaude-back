@@ -1,9 +1,9 @@
-import { badRequest, ok, serverError } from "../../helper";
+import { badRequest, created, serverError } from "../../helper";
 import {
+  IController,
   IEmailValidator,
   IHttpRequest,
   IHttpResponse,
-  ISingUp,
 } from "../../protocols";
 import {
   InvalidParamError,
@@ -12,7 +12,7 @@ import {
 } from "../../errors";
 import { IAddAccount } from "@/domain";
 
-export class SingUpController implements ISingUp {
+export class SingUpController implements IController {
   private readonly emailValidator: IEmailValidator;
   private readonly addAccount: IAddAccount;
   constructor(emailValidator: IEmailValidator, addAccount: IAddAccount) {
@@ -33,9 +33,9 @@ export class SingUpController implements ISingUp {
         return badRequest(new InvalidParamError("email"));
       }
 
-      const responseAddAccount = await this.addAccount.add(request.body);
+      const { id, name } = await this.addAccount.add(request.body);
 
-      return ok(responseAddAccount);
+      return created({ id, name });
     } catch (error) {
       return serverError(new ServerError());
     }
