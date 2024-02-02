@@ -37,7 +37,7 @@ export class SingUpController implements IController {
 
       return created({ id, name });
     } catch (error) {
-      return serverError(new ServerError());
+      return serverError(error);
     }
   }
 }

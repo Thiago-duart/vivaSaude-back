@@ -106,7 +106,7 @@ describe("singUp controller", () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse.statusCode).toBe(500);
-    expect(httpResponse.body).toEqual(new ServerError());
+    expect(httpResponse.body).toEqual(new ServerError("any_error"));
   });
   test("should addAccount is called with the passed parameters", async () => {
     const { sut, addAccount } = makeSut();
@@ -139,7 +139,7 @@ describe("singUp controller", () => {
     };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
-    expect(httpResponse.body).toEqual(new ServerError());
+    expect(httpResponse.body).toEqual(new ServerError("any_error"));
   });
   test("should return 201 if the account is created", async () => {
     const { sut } = makeSut();
