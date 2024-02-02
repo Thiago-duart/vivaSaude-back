@@ -15,7 +15,7 @@ describe("insert", () => {
   });
 
   beforeEach(async () => {
-    const collections = mongoConnection.getCollection("accounts");
+    const collections = await mongoConnection.getCollection("accounts");
     await collections.deleteMany({});
   });
 

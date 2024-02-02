@@ -11,7 +11,7 @@ describe("singUp-routes", () => {
   });
 
   beforeEach(async () => {
-    const collections = mongoConnection.getCollection("accounts");
+    const collections = await mongoConnection.getCollection("accounts");
     await collections.deleteMany({});
   });
   test("should return status 201 and account data", async () => {

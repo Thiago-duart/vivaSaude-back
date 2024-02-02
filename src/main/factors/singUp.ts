@@ -1,3 +1,4 @@
+import { Emailconfirmation } from "../../utils/emailConfirm/EmailConfirm";
 import { SingUpController } from "../../controllers/controller/singUp/SingUp";
 import { DbAddAccount } from "../../data/usecases/db_add_account/DbAddAccount";
 import { EncrypterAdapter } from "../../infra/cryptography/Encrypter.adapter";
