@@ -1,6 +1,6 @@
 import type { Config } from "jest";
 
-const config: Config = {
+export const config: Config = {
   collectCoverage: true,
   coverageDirectory: "coverage",
   preset: "@shelf/jest-mongodb",
