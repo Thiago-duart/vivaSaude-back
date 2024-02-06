@@ -10,7 +10,7 @@ import { LogControllerdDecorator } from "./log";
 describe("log", () => {
   function makeSut() {
     class LogErrorRepositoreStub implements ILogErrorRepositore {
-      async log(error: string): Promise<any> {
+      async logError(error: string): Promise<any> {
         return;
       }
     }
@@ -61,7 +61,7 @@ describe("log", () => {
       makeSut();
     const fakeError = new Error();
     fakeError.stack = "fake_error";
-    const logSpy = jest.spyOn(logErrorRepositoreStub, "log");
+    const logSpy = jest.spyOn(logErrorRepositoreStub, "logError");
     jest
       .spyOn(controllerStub, "handle")
       .mockImplementationOnce(
