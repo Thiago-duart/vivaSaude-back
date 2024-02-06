@@ -9,6 +9,7 @@ export class AccountMongoRepositore implements IAddAccountRepositore {
     const { _id, ...accountData } = await accountCollection.findOne({
       _id: response.insertedId,
     });
+
     return {
       id: _id.toString(),
       name: accountData.name,
